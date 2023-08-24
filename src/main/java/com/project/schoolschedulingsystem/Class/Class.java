@@ -1,5 +1,7 @@
 package com.project.schoolschedulingsystem.Class;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.schoolschedulingsystem.Grade.Grade;
 import com.project.schoolschedulingsystem.Slot.Slot;
 import com.project.schoolschedulingsystem.Student.Student;
@@ -37,8 +39,7 @@ public class Class {
 
     @Column(
             name = "room",
-            nullable = false,
-            unique = true
+            nullable = false
     )
     private Long roomNumber;
 
@@ -64,6 +65,7 @@ public class Class {
                     name = "class_grade_fk"
             )
     )
+    @JsonBackReference
     private Grade grade;
 
     @OneToMany(
@@ -72,6 +74,7 @@ public class Class {
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
+    @JsonManagedReference
     private List<Student> students = new ArrayList<>();
 
     @OneToMany(
@@ -80,6 +83,7 @@ public class Class {
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
+    @JsonManagedReference
     private List<Slot> slots = new ArrayList<>();
 
     public Class(String name, Long roomNumber, Long capacity, Long actualSize) {
@@ -89,7 +93,12 @@ public class Class {
         this.actualSize = actualSize;
     }
 
-    public Class(String name, Long roomNumber, Long capacity, Long actualSize, Grade grade) {
+    public Class(String name,
+                 Long roomNumber,
+                 Long capacity,
+                 Long actualSize,
+                 Grade grade) {
+
         this.name = name;
         this.roomNumber = roomNumber;
         this.capacity = capacity;
@@ -148,6 +157,32 @@ public class Class {
         this.students = students;
     }
 
+    public List<Slot> getSlots() {
+        return slots;
+    }
+
+    public void setSlots(List<Slot> slots) {
+        this.slots = slots;
+    }
+
+    public void addStudent(Student student)
+    {
+        if (!this.students.contains(student))
+        {
+            this.students.add(student);
+            student.setaClass(this);
+        }
+    }
+
+    public void deleteStudent(Student student)
+    {
+        if (this.students.contains(student))
+        {
+            this.students.remove(student);
+            student.setaClass(null);
+        }
+    }
+
     public void addSlot(Slot slot)
     {
         if(!this.slots.contains(slot))
@@ -172,6 +207,9 @@ public class Class {
                 ", roomNumber=" + roomNumber +
                 ", capacity=" + capacity +
                 ", actualSize=" + actualSize +
+                ", grade=" + grade +
+                ", students=" + students +
+                ", slots=" + slots +
                 '}';
     }
 }

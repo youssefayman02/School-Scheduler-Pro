@@ -1,5 +1,8 @@
 package com.project.schoolschedulingsystem.Grade;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.schoolschedulingsystem.Class.Class;
 import com.project.schoolschedulingsystem.School.School;
 import com.project.schoolschedulingsystem.Subject.Subject;
@@ -53,6 +56,7 @@ public class Grade {
                     name = "grade_school_fk"
             )
     )
+    @JsonBackReference
     private School school;
 
     @OneToMany(
@@ -61,6 +65,7 @@ public class Grade {
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
+    @JsonManagedReference
     private List<Class> classes = new ArrayList<>();
 
     @OneToMany(
@@ -68,6 +73,7 @@ public class Grade {
             cascade = CascadeType.ALL,
             fetch = FetchType.EAGER
     )
+    @JsonManagedReference
     private List<Subject> subjects = new ArrayList<>();
 
     public Grade(String yearLevel, Long numberOfClasses, School school) {
@@ -160,13 +166,10 @@ public class Grade {
         }
     }
 
-
-    @Override
-    public String toString() {
-        return "Grade{" +
-                "id=" + id +
-                ", yearLevel='" + yearLevel + '\'' +
-                ", numberOfClasses=" + numberOfClasses +
-                '}';
+    public Grade(Long id, String yearLevel, Long numberOfClasses, School school) {
+        this.id = id;
+        this.yearLevel = yearLevel;
+        this.numberOfClasses = numberOfClasses;
+        this.school = school;
     }
 }

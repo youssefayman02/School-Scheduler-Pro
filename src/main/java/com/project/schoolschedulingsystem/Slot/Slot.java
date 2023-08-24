@@ -1,5 +1,6 @@
 package com.project.schoolschedulingsystem.Slot;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.project.schoolschedulingsystem.Class.Class;
 import com.project.schoolschedulingsystem.Subject.Subject;
 import jakarta.persistence.*;
@@ -60,6 +61,7 @@ public class Slot {
                  name = "slot_subject_fk"
          )
     )
+    @JsonBackReference
     private Subject subject;
 
     @ManyToOne
@@ -70,6 +72,7 @@ public class Slot {
                     name = "slot_class_fk"
             )
     )
+    @JsonBackReference
     private Class aClass;
 
     public Slot() {
@@ -81,7 +84,13 @@ public class Slot {
         this.endTime = endTime;
     }
 
-    public Slot(LocalDate date, LocalTime startTime, LocalTime endTime, LocalTime duration, Subject subject, Class aClass) {
+    public Slot(LocalDate date,
+                LocalTime startTime,
+                LocalTime endTime,
+                LocalTime duration,
+                Subject subject,
+                Class aClass) {
+
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -150,6 +159,8 @@ public class Slot {
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", duration=" + duration +
+                ", subject=" + subject +
+                ", aClass=" + aClass +
                 '}';
     }
 }

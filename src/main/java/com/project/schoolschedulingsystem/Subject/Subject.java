@@ -1,7 +1,10 @@
 package com.project.schoolschedulingsystem.Subject;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.schoolschedulingsystem.Grade.Grade;
 import com.project.schoolschedulingsystem.Slot.Slot;
+import com.project.schoolschedulingsystem.SubjectTeacherAssignment.SubjectTeacherAssignment;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -57,6 +60,7 @@ public class Subject {
                     name = "subject_grade_fk"
             )
     )
+    @JsonBackReference
     private Grade grade;
 
     @OneToMany(
@@ -65,7 +69,15 @@ public class Subject {
             fetch = FetchType.EAGER,
             orphanRemoval = true
     )
+    @JsonManagedReference
     private List<Slot> slots = new ArrayList<>();
+
+    @OneToMany(
+            mappedBy = "subject",
+            cascade = CascadeType.ALL
+    )
+    @JsonManagedReference
+    private List<SubjectTeacherAssignment> subjectTeacherAssignments = new ArrayList<>();
 
 
     public Subject() {
@@ -82,6 +94,14 @@ public class Subject {
         this.code = code;
         this.department = department;
         this.grade = grade;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -116,6 +136,22 @@ public class Subject {
         this.grade = grade;
     }
 
+    public List<Slot> getSlots() {
+        return slots;
+    }
+
+    public void setSlots(List<Slot> slots) {
+        this.slots = slots;
+    }
+
+    public List<SubjectTeacherAssignment> getSubjectTeacherAssignments() {
+        return subjectTeacherAssignments;
+    }
+
+    public void setSubjectTeacherAssignments(List<SubjectTeacherAssignment> subjectTeacherAssignments) {
+        this.subjectTeacherAssignments = subjectTeacherAssignments;
+    }
+
     public void addSlot(Slot slot)
     {
         if (!this.slots.contains(slot))
@@ -134,13 +170,33 @@ public class Subject {
         }
     }
 
+    public void addTeacher(SubjectTeacherAssignment subjectTeacherAssignment)
+    {
+        if (!this.subjectTeacherAssignments.contains(subjectTeacherAssignment))
+        {
+            this.subjectTeacherAssignments.add(subjectTeacherAssignment);
+            subjectTeacherAssignment.setSubject(this);
+        }
+    }
+
+    public void deleteTeacher(SubjectTeacherAssignment subjectTeacherAssignment)
+    {
+        if (this.subjectTeacherAssignments.contains(subjectTeacherAssignment))
+        {
+            this.subjectTeacherAssignments.remove(subjectTeacherAssignment);
+            subjectTeacherAssignment.setSubject(null);
+        }
+    }
+
     @Override
     public String toString() {
         return "Subject{" +
-                "Id=" + id +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", code='" + code + '\'' +
                 ", department='" + department + '\'' +
+                ", grade=" + grade +
+                ", slots=" + slots +
                 '}';
     }
 }

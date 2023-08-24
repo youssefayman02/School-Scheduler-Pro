@@ -1,5 +1,6 @@
 package com.project.schoolschedulingsystem.Student;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.project.schoolschedulingsystem.Class.Class;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -77,16 +78,25 @@ public class Student {
     @JoinColumn(
             name = "class_id",
             referencedColumnName = "id",
+            nullable = false,
             foreignKey = @ForeignKey(
                     name = "student_class_fk"
             )
     )
+    @JsonBackReference
     private Class aClass;
 
     public Student() {
     }
 
-    public Student(String firstName, String lastName, LocalDate dateOfBirth, String address, String contactPhone, String contactEmail, Gender gender) {
+    public Student(String firstName,
+                   String lastName,
+                   LocalDate dateOfBirth,
+                   String address,
+                   String contactPhone,
+                   String contactEmail,
+                   Gender gender) {
+
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
@@ -96,7 +106,15 @@ public class Student {
         this.gender = gender;
     }
 
-    public Student(String firstName, String lastName, LocalDate dateOfBirth, String address, String contactPhone, String contactEmail, Gender gender, Class aClass) {
+    public Student(String firstName,
+                   String lastName,
+                   LocalDate dateOfBirth,
+                   String address,
+                   String contactPhone,
+                   String contactEmail,
+                   Gender gender,
+                   Class aClass) {
+
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;

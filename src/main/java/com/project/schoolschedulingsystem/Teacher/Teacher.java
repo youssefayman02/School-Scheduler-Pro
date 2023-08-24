@@ -1,11 +1,16 @@
 package com.project.schoolschedulingsystem.Teacher;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.schoolschedulingsystem.School.School;
 import com.project.schoolschedulingsystem.Student.Gender;
+import com.project.schoolschedulingsystem.SubjectTeacherAssignment.SubjectTeacherAssignment;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "Teacher")
 @Table(name = "teacher")
@@ -95,7 +100,16 @@ public class Teacher {
                     name = "teacher_school_fk"
             )
     )
+    @JsonBackReference
     private School school;
+
+    @OneToMany(
+            mappedBy = "teacher",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER
+    )
+    @JsonManagedReference
+    private List<SubjectTeacherAssignment> subjectTeacherAssignments = new ArrayList<>();
 
     public Teacher() {
     }
@@ -108,6 +122,7 @@ public class Teacher {
                    String contactEmail,
                    Gender gender,
                    LocalDate hiredDate) {
+
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
@@ -118,7 +133,16 @@ public class Teacher {
         this.hiredDate = hiredDate;
     }
 
-    public Teacher(String firstName, String lastName, LocalDate dateOfBirth, String address, String contactPhone, String contactEmail, Gender gender, LocalDate hiredDate, School school) {
+    public Teacher(String firstName,
+                   String lastName,
+                   LocalDate dateOfBirth,
+                   String address,
+                   String contactPhone,
+                   String contactEmail,
+                   Gender gender,
+                   LocalDate hiredDate,
+                   School school) {
+
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
@@ -128,6 +152,14 @@ public class Teacher {
         this.gender = gender;
         this.hiredDate = hiredDate;
         this.school = school;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -207,6 +239,32 @@ public class Teacher {
     }
     public void setSchool(School school) {
         this.school = school;
+    }
+
+    public List<SubjectTeacherAssignment> getSubjectTeacherAssignments() {
+        return subjectTeacherAssignments;
+    }
+
+    public void setSubjectTeacherAssignments(List<SubjectTeacherAssignment> subjectTeacherAssignments) {
+        this.subjectTeacherAssignments = subjectTeacherAssignments;
+    }
+
+    public void addSubject (SubjectTeacherAssignment subjectTeacherAssignment)
+    {
+        if (!this.subjectTeacherAssignments.contains(subjectTeacherAssignment))
+        {
+            this.subjectTeacherAssignments.add(subjectTeacherAssignment);
+            subjectTeacherAssignment.setTeacher(this);
+        }
+    }
+
+    public void deleteSubject (SubjectTeacherAssignment subjectTeacherAssignment)
+    {
+        if (this.subjectTeacherAssignments.contains(subjectTeacherAssignment))
+        {
+            this.subjectTeacherAssignments.remove(subjectTeacherAssignment);
+            subjectTeacherAssignment.setTeacher(null);
+        }
     }
 
     @Override

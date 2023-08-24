@@ -1,5 +1,9 @@
 package com.project.schoolschedulingsystem.School;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.project.schoolschedulingsystem.Grade.Grade;
 import com.project.schoolschedulingsystem.Teacher.Teacher;
 import jakarta.persistence.*;
@@ -72,6 +76,7 @@ public class School {
             nullable = false,
             columnDefinition = "DATE"
     )
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate establishedDate;
 
     @Column(
@@ -92,6 +97,7 @@ public class School {
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
+    @JsonManagedReference
     private List<Grade> grades = new ArrayList<>();
 
     @OneToMany(
@@ -100,6 +106,7 @@ public class School {
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
+    @JsonManagedReference
     private List<Teacher> teachers = new ArrayList<>();
 
     public School(String name,
@@ -120,21 +127,15 @@ public class School {
         this.numberOfGrades = numberOfGrades;
     }
 
-    public School(Long id, String name, String city, String country, String contactPhone, String principalName, LocalDate establishedDate, SchoolType schoolType, Long numberOfGrades, List<Grade> grades, List<Teacher> teachers) {
-        this.id = id;
-        this.name = name;
-        this.city = city;
-        this.country = country;
-        this.contactPhone = contactPhone;
-        this.principalName = principalName;
-        this.establishedDate = establishedDate;
-        this.schoolType = schoolType;
-        this.numberOfGrades = numberOfGrades;
-        this.grades = grades;
-        this.teachers = teachers;
+    public School() {
     }
 
-    public School() {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -199,6 +200,22 @@ public class School {
 
     public void setNumberOfGrades(Long numberOfGrades) {
         this.numberOfGrades = numberOfGrades;
+    }
+
+    public List<Grade> getGrades() {
+        return grades;
+    }
+
+    public void setGrades(List<Grade> grades) {
+        this.grades = grades;
+    }
+
+    public List<Teacher> getTeachers() {
+        return teachers;
+    }
+
+    public void setTeachers(List<Teacher> teachers) {
+        this.teachers = teachers;
     }
 
     public void addGrade(Grade grade)
