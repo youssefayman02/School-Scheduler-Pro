@@ -18,4 +18,6 @@ public class SubjectTeacherAssignmentService {
         return subjectTeacherAssignmentRepository.findAll();
     }
 
+//    public SubjectTeacherAssignment getSubjectTeacherAssignmentById(Long id) {
+//    }
 }
