@@ -2,7 +2,8 @@ package com.project.schoolschedulingsystem.Subject;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,32 +13,31 @@ import java.util.List;
 @AllArgsConstructor
 public class SubjectController {
 
-    @Autowired
     private final SubjectService subjectService;
 
     @GetMapping("all")
-    public List<Subject> getAllSubjects() {
-        return subjectService.getAllSubjects();
+    public ResponseEntity<List<Subject>> getAllSubjects() {
+        return new ResponseEntity<>(subjectService.getAllSubjects(), HttpStatus.OK);
     }
 
     @GetMapping(path = "{subjectId}")
-    public Subject getSubject(@PathVariable("subjectId") Long id) {
-        return subjectService.getSubjectById(id);
+    public ResponseEntity<Subject> getSubject(@PathVariable("subjectId") Long id) {
+        return new ResponseEntity<>(subjectService.getSubjectById(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public void createSubject(@Valid @RequestBody SubjectRequestDTO subjectRequestDTO) {
-        subjectService.createSubject(subjectRequestDTO);
+    public ResponseEntity<Subject> saveSubject(@Valid @RequestBody SubjectRequestDTO subjectRequestDTO) {
+        return new ResponseEntity<>(subjectService.saveSubject(subjectRequestDTO), HttpStatus.CREATED);
     }
 
     @PutMapping(path = "{subjectId}")
-    public void updateSubject(@RequestBody SubjectRequestDTO subjectRequestDTO, @PathVariable("subjectId") Long id) {
-        subjectService.updateSubject(subjectRequestDTO, id);
+    public ResponseEntity<Subject> updateSubject(@RequestBody SubjectRequestDTO subjectRequestDTO, @PathVariable("subjectId") Long id) {
+        return new ResponseEntity<>(subjectService.updateSubject(subjectRequestDTO, id), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "{subjectId}")
-    public void deleteSubject(@PathVariable("subjectId") Long id) {
-        subjectService.deleteSubject(id);
+    public ResponseEntity<Subject> deleteSubject(@PathVariable("subjectId") Long id) {
+        return new ResponseEntity<>(subjectService.deleteSubject(id), HttpStatus.OK);
     }
 
 }

@@ -25,15 +25,15 @@ public class ClassService {
     public Class getaClass(Long id)
     {
         return classRepository.findById(id).orElseThrow(
-                () -> new ClassNotFoundException("Class with id " + id + " does not exist")
+                () -> new ClassNotFoundException("Class with id " + id + " is not found")
         );
     }
 
-    public void createClass(ClassRequestDTO classRequestDTO)
+    public Class saveClass(ClassRequestDTO classRequestDTO)
     {
         Grade grade = gradeRepository.findById(classRequestDTO.getGradeId())
                 .orElseThrow(
-                        () -> new GradeNotFoundException("Grade with id " + classRequestDTO.getGradeId() + " does not exist")
+                        () -> new GradeNotFoundException("Grade with id " + classRequestDTO.getGradeId() + " is not found")
                 );
 
         if (grade.getClasses().size() == grade.getNumberOfClasses())
@@ -51,42 +51,48 @@ public class ClassService {
 
         grade.addClass(aClass);
         classRepository.save(aClass);
+
+        return aClass;
     }
 
-    public void updateClass (ClassRequestDTO classRequestDTO, Long id)
+    public Class updateClass (ClassRequestDTO classRequestDTO, Long id)
     {
         Grade grade = gradeRepository.findById(classRequestDTO.getGradeId())
                 .orElseThrow(
-                        () -> new GradeNotFoundException("Grade with id " + classRequestDTO.getGradeId() + " does not exist")
+                        () -> new GradeNotFoundException("Grade with id " + classRequestDTO.getGradeId() + " is not found")
                 );
 
         Class aClass = classRepository.findById(id)
                 .orElseThrow(
-                        () -> new ClassNotFoundException("Class with id " + id + " does not exist")
+                        () -> new ClassNotFoundException("Class with id " + id + " is not found")
                 );
 
         grade.deleteClass(aClass);
 
-        aClass.setName(classRequestDTO.getName());
-        aClass.setRoomNumber(classRequestDTO.getRoomNumber());
-        aClass.setCapacity(classRequestDTO.getCapacity());
-        aClass.setActualSize(classRequestDTO.getActualSize());
+        aClass.setName(classRequestDTO.getName() == null ? aClass.getName() : classRequestDTO.getName());
+        aClass.setRoomNumber(classRequestDTO.getRoomNumber() == null ? aClass.getRoomNumber() : classRequestDTO.getRoomNumber());
+        aClass.setCapacity(classRequestDTO.getCapacity() == null ? aClass.getCapacity() : classRequestDTO.getCapacity());
+        aClass.setActualSize(classRequestDTO.getActualSize() == null ? aClass.getActualSize() : classRequestDTO.getActualSize());
 
         grade.addClass(aClass);
 
         classRepository.save(aClass);
+
+        return aClass;
     }
 
-    public void deleteClass(Long id)
+    public Class deleteClass(Long id)
     {
         Class aClass = classRepository.findById(id)
                 .orElseThrow(
-                        () -> new ClassNotFoundException("Class with id " + id + " does not exist")
+                        () -> new ClassNotFoundException("Class with id " + id + " is not found")
                 );
 
         Grade grade = aClass.getGrade();
         grade.deleteClass(aClass);
 
         classRepository.deleteById(id);
+
+        return aClass;
     }
 }

@@ -1,0 +1,274 @@
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: sans-serif;
+}
+
+:root {
+    --main-color: #2196f3;
+    --main-color-alt: #1787e0;
+    --transition-duration: 0.3s;
+    --main-padding: 2rem;
+    --seconadry-color: #ececec;
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+.container {
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.main-title {
+    margin: 0 auto 2rem;
+    border: 0.14rem solid black;
+    padding: 0.5rem 0.7rem;
+    width: fit-content;
+    position: relative;
+    transition: 0.3s;
+    text-transform: uppercase;
+    z-index: 1;
+}
+
+.main-title:before {
+    content: "";
+    position: absolute;
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 50%;
+    top: 50%;
+    left: -2rem;
+    transform: translateY(-50%);
+    background-color: var(--main-color);
+    z-index: -1;
+}
+
+.main-title:after{
+    content: "";
+    position: absolute;
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 50%;
+    top: 50%;
+    right: -2rem;
+    transform: translateY(-50%);
+    background-color: var(--main-color);
+    z-index: -1;
+}
+
+.main-title:hover::before {
+    animation: right-move 0.5s linear forwards;
+}
+
+.main-title:hover::after {
+    animation: left-move 0.5s linear forwards;
+}
+
+.main-title:hover {
+    color: white;
+    border: 0.14rem solid white;
+    transition-delay: 0.5s;
+}
+
+/* Small */
+@media (min-width: 768px) {
+    .container {
+        width: 750px;
+    }
+}
+
+/* Medium */
+@media (min-width: 992px) {
+    .container {
+        width: 970px;
+    }
+}
+
+/* Large */
+@media (min-width: 1200px) {
+    .container {
+        width: 1170px;
+    }
+}
+
+.header {
+    background-color: white;
+    position: relative;
+    -webkit-box-shadow: 0 0 10px #ddd;
+    -moz-box-shadow: 0 0 10px #ddd;
+    box-shadow: 0 0 10px #ddd;
+}
+
+.header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.header .container .title {
+    color: #2196f3;
+    height: 4rem;
+    font-size: 1.4rem;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header .container ul {
+    display: flex;
+}
+
+.header .container ul li {
+    transition: 0.3s;
+}
+
+.header .container ul li a {
+    height: 4rem;
+    padding: 0 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.1rem;
+    color: #2d2d2d;
+    position: relative;
+    cursor: pointer;
+}
+
+.header .container ul li a::before {
+    content: "";
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    position: absolute;
+    height: 0.2rem;
+    width: 0;
+    background-color: #2196f3;
+    transition: 0.3s;
+}
+
+.header .container ul li:hover a::before {
+    width: 100%;
+}
+
+.header .container ul li:hover  {
+    background-color: #f6f6f6;
+}
+
+.school {
+    padding-top: var(--main-padding);
+    padding-bottom: var(--main-padding);
+    background-color: var(--seconadry-color);
+    position: relative;
+}
+
+.school .container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.school .container form {
+    position: relative;
+    padding: 1rem 2rem;
+    width: fit-content;
+    border: 0.1rem solid var(--main-color-alt);
+    border-radius: 1rem;
+}
+
+.school .container form > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.school .container form label {
+    display: inline-block;
+    width: 9rem;
+    color: #2d2d2d;
+}
+
+.school .container form input {
+    display: inline-block;
+    height: 1.5rem;
+    border-radius: 0.4rem;
+    border: none;
+    width: 10rem;
+    caret-color: #2196f3;
+    padding-left: 0.5rem;
+}
+
+.school .container form select {
+    width: 10rem;
+    border: none;
+    height: 1.6rem;
+    border-radius: 0.4rem;
+}
+
+.school .container form input:focus {
+    outline: none;
+}
+
+.school .container form input[type=submit] {
+    background-color: var(--main-color-alt);
+    color: white;
+    height: 2rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem 0.7rem;
+    transition: var(--transition-duration);
+}
+
+.school .container form input[type=submit]:hover {
+    background-color: var(--main-color);
+}
+
+@keyframes right-move {
+    50% {
+        left: 0;
+        width: 0.8rem;
+        height: 0.8rem;
+    }
+
+    100% {
+        left: 0;
+        border-radius: 0;
+        width: 50%;
+        height: 100%;
+    }
+}
+@keyframes left-move {
+    50% {
+        right: 0;
+        width: 0.8rem;
+        height: 0.8rem;
+    }
+
+    100% {
+        right: 0;
+        border-radius: 0;
+        width: 51%;
+        height: 100%;
+    }
+}
+

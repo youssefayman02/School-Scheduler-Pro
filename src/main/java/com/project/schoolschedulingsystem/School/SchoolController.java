@@ -2,50 +2,50 @@ package com.project.schoolschedulingsystem.School;
 
 import com.project.schoolschedulingsystem.Student.Student;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RequestMapping(path = "api/school")
 @RestController
+@AllArgsConstructor
 public class SchoolController {
 
     private final SchoolService schoolService;
 
-    @Autowired
-    public SchoolController(SchoolService schoolService) {
-        this.schoolService = schoolService;
-    }
 
     @GetMapping(value = "all")
-    public List<School> getAllSchools()
+    public ResponseEntity<List<School>> getAllSchools()
     {
-        return schoolService.getAllSchools();
+        return new ResponseEntity<>(schoolService.getAllSchools(), HttpStatus.OK);
     }
 
     @GetMapping(path = "{schoolId}")
-    public School getSchool(@PathVariable("schoolId") Long id)
+    public ResponseEntity<School> getSchool(@PathVariable("schoolId") Long id)
     {
-        return schoolService.getSchool(id);
+        return new ResponseEntity<>(schoolService.getSchool(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public void saveSchool(@Valid @RequestBody SchoolRequestDTO school)
+    public ResponseEntity<School> saveSchool(@Valid @RequestBody SchoolRequestDTO school)
     {
-        schoolService.saveSchool(school);
+        return new ResponseEntity<>(schoolService.saveSchool(school), HttpStatus.CREATED);
     }
 
     @PutMapping(path = "{schoolId}")
-    public void updateSchool(@RequestBody SchoolRequestDTO newSchool, @PathVariable("schoolId") Long id)
+    public ResponseEntity<School> updateSchool(@RequestBody SchoolRequestDTO newSchool, @PathVariable("schoolId") Long id)
     {
-        schoolService.updateSchool(newSchool, id);
+        return new ResponseEntity<>(schoolService.updateSchool(newSchool, id), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "{schoolId}")
-    public void deleteSchool(@PathVariable("schoolId") Long id)
+    public ResponseEntity<School> deleteSchool(@PathVariable("schoolId") Long id)
     {
-        schoolService.deleteSchool(id);
+        return new ResponseEntity<School>(schoolService.deleteSchool(id), HttpStatus.OK);
     }
 
 }

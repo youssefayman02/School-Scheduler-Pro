@@ -3,6 +3,7 @@ package com.project.schoolschedulingsystem.Teacher;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.schoolschedulingsystem.School.School;
+import com.project.schoolschedulingsystem.Slot.Slot;
 import com.project.schoolschedulingsystem.Student.Gender;
 import com.project.schoolschedulingsystem.SubjectTeacherAssignment.SubjectTeacherAssignment;
 import jakarta.persistence.*;
@@ -110,6 +111,14 @@ public class Teacher {
     )
     @JsonManagedReference
     private List<SubjectTeacherAssignment> subjectTeacherAssignments = new ArrayList<>();
+
+    @OneToMany(
+            mappedBy = "teacher",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER
+    )
+    @JsonManagedReference
+    private List<Slot> slots = new ArrayList<>();
 
     public Teacher() {
     }
@@ -249,6 +258,14 @@ public class Teacher {
         this.subjectTeacherAssignments = subjectTeacherAssignments;
     }
 
+    public List<Slot> getSlots() {
+        return slots;
+    }
+
+    public void setSlots(List<Slot> slots) {
+        this.slots = slots;
+    }
+
     public void addSubject (SubjectTeacherAssignment subjectTeacherAssignment)
     {
         if (!this.subjectTeacherAssignments.contains(subjectTeacherAssignment))
@@ -267,6 +284,24 @@ public class Teacher {
         }
     }
 
+    public void addSlot(Slot slot)
+    {
+        if (!this.slots.contains(slot))
+        {
+            this.slots.add(slot);
+            slot.setTeacher(this);
+        }
+    }
+
+    public void deleteSlot(Slot slot)
+    {
+        if (this.slots.contains(slot))
+        {
+            this.slots.remove(slot);
+            slot.setTeacher(null);
+        }
+    }
+
     @Override
     public String toString() {
         return "Teacher{" +
@@ -281,6 +316,8 @@ public class Teacher {
                 ", hiredDate=" + hiredDate +
                 ", yearsOfExperience=" + yearsOfExperience +
                 ", school=" + school +
+                ", subjectTeacherAssignments=" + subjectTeacherAssignments +
+                ", slots=" + slots +
                 '}';
     }
 }

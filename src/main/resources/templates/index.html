@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Main Template CSS File -->
+    <link rel="stylesheet" href="../static/styles.css" />
+    <title>Scheduling Pro</title>
+</head>
+<body>
+        <div class="header">
+            <div class="container">
+                <div class="title">EduSchedPro</div>
+                <ul>
+                    <li><a id="#school">School</a></li>
+                    <li><a id="#grade">Grade</a></li>
+                    <li><a id="class">Class</a></li>
+                    <li><a id="subject">Subject</a></li>
+                    <li><a id="student">Student</a></li>
+                    <li><a id="teacher">Teacher</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="school" id="school">
+            <h2 class="main-title">School</h2>
+            <div class="container">
+                <form method="POST">
+                    <div>
+                        <div>
+                            <label for="name">School Name:</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div>
+                            <label for="city" >City:</label>
+                            <input type="text" id="city" name="city" required >
+                        </div>
+
+                        <div>
+                            <label for="country">Country:</label>
+                            <input type="text" id="country" name="country" required>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div>
+                            <label for="contact_phone">Contact Phone:</label>
+                            <input type="tel" id="contact_phone" name="contact_phone" required>
+                        </div>
+
+                        <div>
+                            <label for="contact_email">Contact  Email:</label>
+                            <input type="email" id="contact_email" name="contact_email" required>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div>
+                            <label for="principal_name">Principal Name:</label>
+                            <input type="text" id="principal_name" name="principal_name" required>
+                        </div>
+
+                        <div>
+                            <label for="school_type">School Type:</label>
+                            <select id="school_type" name="school_type" required>
+                                <option value="national">NATIONAL</option>
+                                <option value="sat">SAT</option>
+                                <option value="ig">IG</option>
+                                <option value="kindergarten">KINDERGARTEN</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div>
+                            <label for="established_date">Established Date:</label>
+                            <input type="date" id="established_date" name="established_date" required>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div>
+                            <label for="start_slot">Start Slot:</label>
+                            <input type="time" id="start_slot" name="start_slot" required>
+                        </div>
+
+                        <div>
+                            <label for="duration">Duration:</label>
+                            <input type="time" id="duration" name="duration" required>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div>
+                            <label for="num_slots">Number of Slots:</label>
+                            <input type="number" id="num_slots" name="num_slots" required>
+                        </div>
+
+                        <div>
+                            <label for="num_grades">Number of Grades:</label>
+                            <input type="number" id="num_grades" name="num_grades" required>
+                        </div>
+                    </div>
+
+                    <input type="submit" value="Submit">
+                </form>
+
+            </div>
+        </div>
+        <div class="grade">
+            <h2 class="main-title">Grade</h2>
+        </div>
+</body>
+</html>

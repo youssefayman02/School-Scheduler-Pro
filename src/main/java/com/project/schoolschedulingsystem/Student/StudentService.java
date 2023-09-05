@@ -30,7 +30,7 @@ public class StudentService {
                 );
     }
 
-    public void createStudent(StudentRequestDTO studentRequestDTO)
+    public Student saveStudent(StudentRequestDTO studentRequestDTO)
     {
         Class aClass = classRepository.findById(studentRequestDTO.getClassId())
                 .orElseThrow(
@@ -57,9 +57,11 @@ public class StudentService {
 
         studentRepository.save(student);
 
+        return student;
+
     }
 
-    public void updateStudent(StudentRequestDTO studentRequestDTO, Long id)
+    public Student updateStudent(StudentRequestDTO studentRequestDTO, Long id)
     {
         Class aClass = classRepository.findById(studentRequestDTO.getClassId())
                 .orElseThrow(
@@ -73,21 +75,23 @@ public class StudentService {
 
         aClass.deleteStudent(student);
 
-        student.setFirstName(studentRequestDTO.getFirstName());
-        student.setLastName(studentRequestDTO.getLastName());
-        student.setDateOfBirth(studentRequestDTO.getBirthOfDate());
-        student.setAddress(studentRequestDTO.getAddress());
-        student.setContactPhone(studentRequestDTO.getContactPhone());
-        student.setContactEmail(studentRequestDTO.getContactEmail());
-        student.setGender(studentRequestDTO.getGender());
+        student.setFirstName(studentRequestDTO.getFirstName() == null ? student.getFirstName() : studentRequestDTO.getFirstName());
+        student.setLastName(studentRequestDTO.getLastName() == null ? student.getLastName() : studentRequestDTO.getLastName());
+        student.setDateOfBirth(studentRequestDTO.getBirthOfDate() == null ? student.getDateOfBirth() : studentRequestDTO.getBirthOfDate());
+        student.setAddress(studentRequestDTO.getAddress() == null ? student.getAddress() : studentRequestDTO.getAddress());
+        student.setContactPhone(studentRequestDTO.getContactPhone() == null ? student.getContactPhone() : studentRequestDTO.getContactPhone());
+        student.setContactEmail(studentRequestDTO.getContactEmail() == null ? student.getContactEmail() : studentRequestDTO.getContactEmail());
+        student.setGender(studentRequestDTO.getGender() == null ? student.getGender() : studentRequestDTO.getGender());
         student.setaClass(aClass);
 
         aClass.addStudent(student);
 
         studentRepository.save(student);
+
+        return student;
     }
 
-    public void deleteStudent(Long id)
+    public Student deleteStudent(Long id)
     {
         Student student = studentRepository.findById(id)
                 .orElseThrow(
@@ -98,5 +102,7 @@ public class StudentService {
         aClass.deleteStudent(student);
 
         studentRepository.deleteById(id);
+
+        return student;
     }
 }

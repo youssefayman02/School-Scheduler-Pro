@@ -5,22 +5,17 @@ import com.project.schoolschedulingsystem.Exceptions.GradeNotFoundException;
 import com.project.schoolschedulingsystem.Exceptions.SchoolNotFoundException;
 import com.project.schoolschedulingsystem.School.School;
 import com.project.schoolschedulingsystem.School.SchoolRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class GradeService {
 
     private final GradeRepository gradeRepository;
     private final SchoolRepository schoolRepository;
-
-    @Autowired
-    public GradeService(GradeRepository gradeRepository, SchoolRepository schoolRepository) {
-        this.gradeRepository = gradeRepository;
-        this.schoolRepository = schoolRepository;
-    }
 
     public List<Grade> getAllGrades(){
         return gradeRepository.findAll();
@@ -33,11 +28,11 @@ public class GradeService {
                 );
     }
 
-    public void saveGrade(GradeRequestDto gradeRequestDto)
+    public Grade saveGrade(GradeRequestDTO gradeRequestDto)
     {
         Long schoolId = gradeRequestDto.getSchoolId();
         School school = schoolRepository.findById(schoolId).orElseThrow(
-                () -> new SchoolNotFoundException()
+                () -> new SchoolNotFoundException("School with id " + schoolId + " is not found")
         );
 
         if (school.getGrades().size() == school.getNumberOfGrades())
@@ -48,9 +43,11 @@ public class GradeService {
         Grade grade = new Grade(gradeRequestDto.getYearLevel(), gradeRequestDto.getNumberOfClasses(), school);
         school.addGrade(grade);
         gradeRepository.save(grade);
+
+        return grade;
     }
 
-    public void updateGrade(GradeRequestDto gradeRequestDto, Long id)
+    public Grade updateGrade(GradeRequestDTO gradeRequestDto, Long id)
     {
         Long schoolId = gradeRequestDto.getSchoolId();
         School school = schoolRepository.findById(schoolId).orElseThrow(
@@ -63,17 +60,18 @@ public class GradeService {
 
         school.deleteGrade(updateGrade);
 
-        updateGrade.setYearLevel(gradeRequestDto.getYearLevel());
-        updateGrade.setNumberOfClasses(gradeRequestDto.getNumberOfClasses());
+        updateGrade.setYearLevel(gradeRequestDto.getYearLevel() == null ? updateGrade.getYearLevel() : gradeRequestDto.getYearLevel());
+        updateGrade.setNumberOfClasses(gradeRequestDto.getNumberOfClasses() == null ? updateGrade.getNumberOfClasses() : gradeRequestDto.getNumberOfClasses());
         updateGrade.setSchool(school);
 
         school.addGrade(updateGrade);
 
         gradeRepository.save(updateGrade);
 
+        return updateGrade;
     }
 
-    public void deleteGrade(Long id)
+    public Grade deleteGrade(Long id)
     {
         Grade grade = gradeRepository.findById(id).orElseThrow(
                 () -> new GradeNotFoundException("Grade with id " + id + " is not found")
@@ -83,5 +81,7 @@ public class GradeService {
         school.deleteGrade(grade);
 
         gradeRepository.deleteById(id);
+
+        return grade;
     }
 }

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GradeRequestDto {
+public class GradeRequestDTO {
 
     @NotBlank(message = "The year level field is required")
     private String yearLevel;

@@ -1,49 +1,47 @@
 package com.project.schoolschedulingsystem.Grade;
 
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RequestMapping("api/grade")
 @RestController
+@AllArgsConstructor
 public class GradeController {
 
     private final GradeService gradeService;
 
-    @Autowired
-    public GradeController(GradeService gradeService) {
-        this.gradeService = gradeService;
-    }
-
     @GetMapping(value = "all")
-    public List<Grade> getAllGrades()
+    public ResponseEntity<List<Grade>> getAllGrades()
     {
-        return gradeService.getAllGrades();
+        return new ResponseEntity<>(gradeService.getAllGrades(), HttpStatus.OK);
     }
 
     @GetMapping(path = "{gradeId}")
-    public Grade getGrade(@PathVariable("gradeId") Long id)
+    public ResponseEntity<Grade> getGrade(@PathVariable("gradeId") Long id)
     {
-        return gradeService.getGrade(id);
+        return new ResponseEntity<>(gradeService.getGrade(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public void saveGrade(@Valid @RequestBody GradeRequestDto gradeRequestDto)
+    public ResponseEntity<Grade> saveGrade(@Valid @RequestBody GradeRequestDTO gradeRequestDto)
     {
-         gradeService.saveGrade(gradeRequestDto);
+         return new ResponseEntity<>(gradeService.saveGrade(gradeRequestDto), HttpStatus.CREATED);
     }
 
     @PutMapping(path = "{gradeId}")
-    public void updateGrade(@RequestBody GradeRequestDto gradeRequestDto, @PathVariable("gradeId") Long id)
+    public ResponseEntity<Grade> updateGrade(@RequestBody GradeRequestDTO gradeRequestDto, @PathVariable("gradeId") Long id)
     {
-        gradeService.updateGrade(gradeRequestDto, id);
+        return new ResponseEntity<>(gradeService.updateGrade(gradeRequestDto, id), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "{gradeId}")
-    public void deleteGrade(@PathVariable("gradeId") Long id)
+    public ResponseEntity<Grade> deleteGrade(@PathVariable("gradeId") Long id)
     {
-        gradeService.deleteGrade(id);
+        return new ResponseEntity<>(gradeService.deleteGrade(id), HttpStatus.OK);
     }
 }

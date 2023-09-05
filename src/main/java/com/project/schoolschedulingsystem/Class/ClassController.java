@@ -2,6 +2,8 @@ package com.project.schoolschedulingsystem.Class;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,33 +16,33 @@ public class ClassController {
     private final ClassService classService;
 
     @GetMapping(value = "all")
-    public List<Class> getAllClasses()
+    public ResponseEntity<List<Class>> getAllClasses()
     {
-        return classService.getAllClasses();
+        return new ResponseEntity<>(classService.getAllClasses(), HttpStatus.OK);
     }
 
     @GetMapping(path = "{classId}")
-    public Class getaClass(@PathVariable("classId") Long id)
+    public ResponseEntity<Class> getaClass(@PathVariable("classId") Long id)
     {
-        return classService.getaClass(id);
+        return new ResponseEntity<>(classService.getaClass(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public void createClass(@Valid @RequestBody ClassRequestDTO classRequestDTO)
+    public ResponseEntity<Class> saveClass(@Valid @RequestBody ClassRequestDTO classRequestDTO)
     {
-        classService.createClass(classRequestDTO);
+        return new ResponseEntity<>(classService.saveClass(classRequestDTO), HttpStatus.CREATED);
     }
 
     @PutMapping(path = "{classId}")
-    public void updateClass(@RequestBody ClassRequestDTO classRequestDTO, @PathVariable("classId") Long id)
+    public ResponseEntity<Class> updateClass(@RequestBody ClassRequestDTO classRequestDTO, @PathVariable("classId") Long id)
     {
-        classService.updateClass(classRequestDTO, id);
+        return new ResponseEntity<>(classService.updateClass(classRequestDTO, id), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "{classId}")
-    public void deleteClass(@PathVariable("classId") Long id)
+    public ResponseEntity<Class> deleteClass(@PathVariable("classId") Long id)
     {
-        classService.deleteClass(id);
+        return new ResponseEntity<>(classService.deleteClass(id), HttpStatus.OK);
     }
 
 }

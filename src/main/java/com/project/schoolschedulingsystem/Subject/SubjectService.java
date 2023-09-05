@@ -14,10 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class SubjectService {
 
-    @Autowired
     private final SubjectRepository subjectRepository;
-
-    @Autowired
     private final GradeRepository gradeRepository;
 
     public List<Subject> getAllSubjects() {
@@ -30,7 +27,7 @@ public class SubjectService {
         );
     }
 
-    public void createSubject(SubjectRequestDTO subjectRequestDTO)
+    public Subject saveSubject(SubjectRequestDTO subjectRequestDTO)
     {
         Long gradeId = subjectRequestDTO.getGradeId();
         Grade grade = gradeRepository.findById(gradeId)
@@ -41,16 +38,18 @@ public class SubjectService {
         Subject subject = new Subject(
                 subjectRequestDTO.getName(),
                 subjectRequestDTO.getCode(),
-                subjectRequestDTO.getDescription(),
+                subjectRequestDTO.getDepartment(),
                 grade
         );
 
         grade.addSubject(subject);
 
         subjectRepository.save(subject);
+
+        return subject;
     }
 
-    public void updateSubject(SubjectRequestDTO subjectRequestDTO, Long id)
+    public Subject updateSubject(SubjectRequestDTO subjectRequestDTO, Long id)
     {
         Subject subject = subjectRepository.findById(id).orElseThrow(
                 () -> new SubjectNotFoundException("Subject with id " + id + " does not exist")
@@ -64,17 +63,19 @@ public class SubjectService {
 
         grade.deleteSubject(subject);
 
-        subject.setName(subjectRequestDTO.getName());
-        subject.setCode(subjectRequestDTO.getCode());
-        subject.setDepartment(subjectRequestDTO.getDescription());
+        subject.setName(subjectRequestDTO.getName() == null ? subject.getName() : subjectRequestDTO.getName());
+        subject.setCode(subjectRequestDTO.getCode() == null ? subject.getCode() : subjectRequestDTO.getCode());
+        subject.setDepartment(subjectRequestDTO.getDepartment() == null ? subject.getDepartment() : subjectRequestDTO.getDepartment());
         subject.setGrade(grade);
 
         grade.addSubject(subject);
 
         subjectRepository.save(subject);
+
+        return subject;
     }
 
-    public void deleteSubject(Long id)
+    public Subject deleteSubject(Long id)
     {
         Subject subject = subjectRepository.findById(id).orElseThrow(
                 () -> new SubjectNotFoundException("Subject with id " + id + " does not exist")
@@ -84,5 +85,7 @@ public class SubjectService {
         grade.deleteSubject(subject);
 
         subjectRepository.deleteById(id);
+
+        return subject;
     }
 }

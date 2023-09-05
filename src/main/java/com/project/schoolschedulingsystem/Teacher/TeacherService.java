@@ -14,10 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class TeacherService {
 
-    @Autowired
     private final TeacherRepository teacherRepository;
-
-    @Autowired
     private final SchoolRepository schoolRepository;
 
     public List<Teacher> getAllTeachers() {
@@ -26,16 +23,16 @@ public class TeacherService {
 
     public Teacher getTeacherById(Long id) {
         return teacherRepository.findById(id).orElseThrow(
-                () -> new TeacherNotFoundException("Teacher with id " + id + " does not exist")
+                () -> new TeacherNotFoundException("Teacher with id " + id + " is not found")
         );
     }
 
-    public void createTeacher(TeacherRequestDTO teacherRequestDTO)
+    public Teacher saveTeacher(TeacherRequestDTO teacherRequestDTO)
     {
         Long schoolId = teacherRequestDTO.getSchoolId();
         School school = schoolRepository.findById(schoolId)
                 .orElseThrow(
-                        () -> new SchoolNotFoundException("School with id " +  schoolId + " does not exist")
+                        () -> new SchoolNotFoundException("School with id " +  schoolId + " is not found")
                 );
 
         Teacher teacher = new Teacher(
@@ -55,30 +52,32 @@ public class TeacherService {
         school.addTeacher(teacher);
 
         teacherRepository.save(teacher);
+
+        return teacher;
     }
 
-    public void updateTeacher(TeacherRequestDTO teacherRequestDTO, Long id)
+    public Teacher updateTeacher(TeacherRequestDTO teacherRequestDTO, Long id)
     {
         Teacher teacher = teacherRepository.findById(id).orElseThrow(
-                () -> new TeacherNotFoundException("Teacher with id " + id + " does not exist")
+                () -> new TeacherNotFoundException("Teacher with id " + id + " is not found")
         );
 
         Long schoolId = teacherRequestDTO.getSchoolId();
         School school = schoolRepository.findById(schoolId)
                 .orElseThrow(
-                        () -> new SchoolNotFoundException("School with id " +  schoolId + " does not exist")
+                        () -> new SchoolNotFoundException("School with id " +  schoolId + " is not found")
                 );
 
         school.deleteTeacher(teacher);
 
-        teacher.setFirstName(teacherRequestDTO.getFirstName());
-        teacher.setLastName(teacherRequestDTO.getLastName());
-        teacher.setDateOfBirth(teacherRequestDTO.getDateOfBirth());
-        teacher.setAddress(teacherRequestDTO.getAddress());
-        teacher.setContactPhone(teacherRequestDTO.getContactPhone());
-        teacher.setContactEmail(teacherRequestDTO.getContactEmail());
-        teacher.setGender(teacherRequestDTO.getGender());
-        teacher.setHiredDate(teacherRequestDTO.getHiredDate());
+        teacher.setFirstName(teacherRequestDTO.getFirstName() == null ? teacher.getFirstName() : teacherRequestDTO.getFirstName());
+        teacher.setLastName(teacherRequestDTO.getLastName() == null ? teacher.getLastName() : teacherRequestDTO.getLastName());
+        teacher.setDateOfBirth(teacherRequestDTO.getDateOfBirth() == null ? teacher.getDateOfBirth() : teacherRequestDTO.getDateOfBirth());
+        teacher.setAddress(teacherRequestDTO.getAddress() == null ? teacher.getAddress() : teacherRequestDTO.getAddress());
+        teacher.setContactPhone(teacherRequestDTO.getContactPhone() == null ? teacher.getContactPhone() : teacherRequestDTO.getContactPhone());
+        teacher.setContactEmail(teacherRequestDTO.getContactEmail() == null ? teacher.getContactEmail() : teacherRequestDTO.getContactEmail());
+        teacher.setGender(teacherRequestDTO.getGender() == null ? teacher.getGender() : teacherRequestDTO.getGender());
+        teacher.setHiredDate(teacherRequestDTO.getHiredDate() == null ? teacher.getHiredDate() : teacherRequestDTO.getHiredDate());
         teacher.setYearsOfExperience(teacher.getYearsOfExperience());
         teacher.setSchool(school);
 
@@ -86,18 +85,22 @@ public class TeacherService {
 
         teacherRepository.save(teacher);
 
+        return teacher;
+
     }
 
-    public void deleteTeacher(Long id)
+    public Teacher deleteTeacher(Long id)
     {
         Teacher teacher = teacherRepository.findById(id).orElseThrow(
-                () -> new TeacherNotFoundException("Teacher with id " + id + " does not exist")
+                () -> new TeacherNotFoundException("Teacher with id " + id + " is not found")
         );
 
         School school = teacher.getSchool();
         school.deleteTeacher(teacher);
 
         teacherRepository.deleteById(id);
+
+        return teacher;
     }
 
 }

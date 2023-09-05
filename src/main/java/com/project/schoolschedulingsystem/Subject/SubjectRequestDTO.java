@@ -18,7 +18,7 @@ public class SubjectRequestDTO {
     private String code;
 
     @NotBlank(message = "Department field is required")
-    private String description;
+    private String department;
 
     @NotNull(message = "Grade id field is required")
     private Long gradeId;

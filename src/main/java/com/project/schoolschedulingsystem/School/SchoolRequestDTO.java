@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Data
 @NoArgsConstructor
@@ -41,4 +42,15 @@ public class SchoolRequestDTO {
 
     @NotNull(message = "The number of grades is required")
     private Long numberOfGrades;
+
+    @NotNull(message = "The start slot field is required")
+    @JsonFormat(pattern = "HH:mm:ss")
+    private LocalTime startSlot;
+
+    @NotNull(message = "The duration field is required")
+    @JsonFormat(pattern = "HH:mm:ss")
+    private LocalTime duration;
+
+    @NotNull(message = "The number of slots is required")
+    private Long numberOfSlots;
 }

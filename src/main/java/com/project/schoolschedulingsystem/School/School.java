@@ -13,6 +13,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,6 +92,24 @@ public class School {
     )
     private Long numberOfGrades;
 
+    @Column(
+            name = "start_slot",
+            nullable = false
+    )
+    private LocalTime startSlot;
+
+    @Column(
+            name = "duration",
+            nullable = false
+    )
+    private LocalTime duration;
+
+    @Column(
+            name = "number_of_slots",
+            nullable = false
+    )
+    private Long numberOfSlots;
+
     @OneToMany(
             mappedBy = "school",
             cascade = CascadeType.ALL,
@@ -109,14 +128,7 @@ public class School {
     @JsonManagedReference
     private List<Teacher> teachers = new ArrayList<>();
 
-    public School(String name,
-                  String city,
-                  String country,
-                  String contactPhone,
-                  String principalName,
-                  LocalDate establishedDate,
-                  SchoolType schoolType,
-                  Long numberOfGrades) {
+    public School(String name, String city, String country, String contactPhone, String principalName, LocalDate establishedDate, SchoolType schoolType, Long numberOfGrades, LocalTime startSlot, LocalTime duration, Long numberOfSlots) {
         this.name = name;
         this.city = city;
         this.country = country;
@@ -125,6 +137,9 @@ public class School {
         this.establishedDate = establishedDate;
         this.schoolType = schoolType;
         this.numberOfGrades = numberOfGrades;
+        this.startSlot = startSlot;
+        this.duration = duration;
+        this.numberOfSlots = numberOfSlots;
     }
 
     public School() {
@@ -216,6 +231,30 @@ public class School {
 
     public void setTeachers(List<Teacher> teachers) {
         this.teachers = teachers;
+    }
+
+    public LocalTime getStartSlot() {
+        return startSlot;
+    }
+
+    public void setStartSlot(LocalTime startSlot) {
+        this.startSlot = startSlot;
+    }
+
+    public LocalTime getDuration() {
+        return duration;
+    }
+
+    public void setDuration(LocalTime duration) {
+        this.duration = duration;
+    }
+
+    public Long getNumberOfSlots() {
+        return numberOfSlots;
+    }
+
+    public void setNumberOfSlots(Long numberOfSlots) {
+        this.numberOfSlots = numberOfSlots;
     }
 
     public void addGrade(Grade grade)

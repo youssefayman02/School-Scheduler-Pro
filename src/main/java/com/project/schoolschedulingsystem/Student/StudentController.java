@@ -2,6 +2,8 @@ package com.project.schoolschedulingsystem.Student;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,32 +16,32 @@ public class StudentController {
     private final StudentService studentService;
 
     @GetMapping("all")
-    public List<Student> getAllStudents()
+    public ResponseEntity<List<Student>> getAllStudents()
     {
-        return studentService.getAllStudents();
+        return new ResponseEntity<>(studentService.getAllStudents(), HttpStatus.OK);
     }
 
     @GetMapping(path = "{studentId}")
-    public Student getStudent(@PathVariable("studentId") Long id)
+    public ResponseEntity<Student> getStudent(@PathVariable("studentId") Long id)
     {
-        return studentService.getStudent(id);
+        return new ResponseEntity<>(studentService.getStudent(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public void createStudent(@Valid @RequestBody StudentRequestDTO studentRequestDTO)
+    public ResponseEntity<Student> saveStudent(@Valid @RequestBody StudentRequestDTO studentRequestDTO)
     {
-        studentService.createStudent(studentRequestDTO);
+        return new ResponseEntity<>(studentService.saveStudent(studentRequestDTO), HttpStatus.CREATED);
     }
 
     @PutMapping(path = "{studentId}")
-    public void updateStudent(@RequestBody StudentRequestDTO studentRequestDTO, @PathVariable("studentId") Long id)
+    public ResponseEntity<Student> updateStudent(@RequestBody StudentRequestDTO studentRequestDTO, @PathVariable("studentId") Long id)
     {
-        studentService.updateStudent(studentRequestDTO, id);
+        return new ResponseEntity<>(studentService.updateStudent(studentRequestDTO, id), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "{studentId}")
-    public void deleteStudent(@PathVariable("studentId") Long id)
+    public ResponseEntity<Student> deleteStudent(@PathVariable("studentId") Long id)
     {
-        studentService.deleteStudent(id);
+        return new ResponseEntity<>(studentService.deleteStudent(id), HttpStatus.OK);
     }
 }
