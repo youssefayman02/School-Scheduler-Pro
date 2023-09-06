@@ -243,6 +243,8 @@ a {
     background-color: var(--main-color);
 }
 
+
+
 @keyframes right-move {
     50% {
         left: 0;
